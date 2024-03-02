@@ -28,8 +28,8 @@ public class Address {
     @Column(nullable = false)
     private String postalCode;
 
-    @ManyToMany(cascade = CascadeType.ALL, mappedBy = "addresses")
-    private List<User> users = new ArrayList<>();
+    @ManyToOne(cascade = CascadeType.ALL)
+    private User user;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "country_id")
@@ -88,16 +88,12 @@ public class Address {
         this.postalCode = postalCode;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public User getUser() {
+        return user;
     }
 
-    public void addUsers(User user) {
-        this.users.add(user);
-    }
-
-    public void removeUsers(User user) {
-        this.users.remove(user);
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Country getCountry() {

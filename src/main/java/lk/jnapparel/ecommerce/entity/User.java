@@ -1,7 +1,10 @@
 package lk.jnapparel.ecommerce.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +15,10 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private String firstName;
+
+    private String lastName;
+
     @Column(nullable = false, unique = true)
     private String emailAddress;
 
@@ -21,10 +28,13 @@ public class User {
     @Column(nullable = false)
     private String password;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(name = "USER_ADDRESS",
-            joinColumns = @JoinColumn(name = "USER_ID"),
-            inverseJoinColumns = @JoinColumn(name = "ADDRESS_ID"))
+    @CreationTimestamp
+    private LocalDateTime createDate;
+
+    @UpdateTimestamp
+    private LocalDateTime lastupdatedDate;
+
+    @OneToMany( fetch = FetchType.LAZY, cascade = CascadeType.ALL ,mappedBy = "user")
     private List<Address> addresses = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
@@ -33,6 +43,12 @@ public class User {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
     private List<ShopOrder> shopOrders = new ArrayList<>();
 
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<ShoppingCart> shoppingCarts = new ArrayList<>();
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "user")
+    private List<UserReview>userReviews = new ArrayList<>();
+
 
     public Long getId() {
         return id;
@@ -40,6 +56,22 @@ public class User {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+       this.lastName = lastName;
     }
 
     public String getEmailAddress() {
@@ -100,5 +132,17 @@ public class User {
 
     public void removeShopOrders(ShopOrder shopOrder) {
         this.shopOrders.remove(shopOrder);
+    }
+
+    public List<UserReview> getUserReiews() {
+        return userReviews;
+    }
+
+    public void addUserReviews(UserReview userReview) {
+        this.userReviews.add(userReview);
+    }
+
+    public void removeUserReviews(UserReview userReview) {
+        this.userReviews.remove(userReview);
     }
 }

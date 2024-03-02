@@ -25,6 +25,10 @@ public class OrderLine {
     @JoinColumn(name = "order_id")
     private ShopOrder shopOrder;
 
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_item")
+    private Product product;
+
     public OrderLine() {
     }
 
@@ -32,12 +36,14 @@ public class OrderLine {
                      int quantity,
                      double price,
                      List<UserReview> userReviews,
-                     ShopOrder shopOrder) {
+                     ShopOrder shopOrder,
+                     Product product) {
         this.id = id;
         this.quantity = quantity;
         this.price = price;
         this.userReviews = userReviews;
         this.shopOrder = shopOrder;
+        this.product = product;
     }
 
     public Long getId() {
@@ -82,5 +88,13 @@ public class OrderLine {
 
     public void setShopOrder(ShopOrder shopOrder) {
         this.shopOrder = shopOrder;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }

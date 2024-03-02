@@ -2,6 +2,9 @@ package lk.jnapparel.ecommerce.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 public class ShopOrder {
     @Id
@@ -33,6 +36,10 @@ public class ShopOrder {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "order_status")
     private OrderStatus orderStatus;
+
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL, mappedBy = "shopOrder")
+    private List<OrderLine> orderLines = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -96,5 +103,17 @@ public class ShopOrder {
 
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
+    }
+
+    public List<OrderLine> getOrderLines() {
+        return orderLines;
+    }
+
+    public void addOrderLines(OrderLine orderLine) {
+        this.orderLines.add(orderLine);
+    }
+
+    public void removeOrderLines(OrderLine orderLine) {
+        this.orderLines.remove(orderLine);
     }
 }

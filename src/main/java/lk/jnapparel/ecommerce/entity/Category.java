@@ -1,37 +1,44 @@
 package lk.jnapparel.ecommerce.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "category_id")
     private Long id;
 
-    @Column(nullable = false)
-    private String categoryName;
+    @Column(length = 100)
+    private String name;
+
+    private String description;
+
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "parent_category_id")
+    private Category parentCategory;
+
+    @CreationTimestamp
+    private LocalDateTime createDate;
+
+    @UpdateTimestamp
+    private LocalDateTime lastupdatedDate;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "category")
     private List<Product> products = new ArrayList<>();
 
-    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "category")
-    private List<Variation> variations = new ArrayList<>();
-
-
     public Category() {
     }
 
-    public Category(Long id,
-                    String categoryName,
-                    List<Product> products,
-                    List<Variation> variations) {
-        this.id = id;
-        this.categoryName = categoryName;
-        this.products = products;
-        this.variations = variations;
+    public Category(String name, String description) {
+        this.name = name;
+        this.description = description;
     }
 
     public Long getId() {
@@ -42,12 +49,28 @@ public class Category {
         this.id = id;
     }
 
-    public String getCategoryName() {
-        return categoryName;
+    public String getName() {
+        return name;
     }
 
-    public void setCategoryName(String categoryName) {
-        this.categoryName = categoryName;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Category getParentCategory() {
+        return parentCategory;
+    }
+
+    public void setParentCategory(Category parentCategory) {
+        this.parentCategory = parentCategory;
     }
 
     public List<Product> getProducts() {
@@ -62,15 +85,4 @@ public class Category {
         this.products.remove(product);
     }
 
-    public List<Variation> getVariations() {
-        return variations;
-    }
-
-    public void addVariations(Variation variation) {
-        this.variations.add(variation);
-    }
-
-    public void removeVariations(Variation variation) {
-        this.variations.remove(variation);
-    }
 }

@@ -17,18 +17,18 @@ public class ShoppingCartItem {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "product_item")
-    private ProductItem productItem;
+    private Product product;
 
     public ShoppingCartItem() {
     }
 
     public ShoppingCartItem(Long id, int quantity,
                             ShoppingCart shoppingCart,
-                            ProductItem productItem) {
+                            Product product) {
         this.id = id;
         this.quantity = quantity;
         this.shoppingCart = shoppingCart;
-        this.productItem = productItem;
+        this.product = product;
     }
 
     public Long getId() {
@@ -55,11 +55,11 @@ public class ShoppingCartItem {
         this.shoppingCart = shoppingCart;
     }
 
-    public ProductItem getProductItem() {
-        return productItem;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductItem(ProductItem productItem) {
-        this.productItem = productItem;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 }
