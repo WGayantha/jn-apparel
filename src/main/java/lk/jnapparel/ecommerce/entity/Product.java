@@ -2,6 +2,8 @@ package lk.jnapparel.ecommerce.entity;
 
 import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
@@ -23,7 +25,6 @@ public class Product {
     @Column(nullable = false)
     private double price;
 
-    @Column(nullable = false)
     private String productImage;
 
     @Column(nullable = false)
@@ -45,6 +46,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "category_id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Category category;
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "product")

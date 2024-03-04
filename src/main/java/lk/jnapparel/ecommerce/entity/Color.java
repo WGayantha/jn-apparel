@@ -11,6 +11,7 @@ public class Color {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(length = 50)
     private String value;
 
     @OneToMany(fetch = FetchType.LAZY,
